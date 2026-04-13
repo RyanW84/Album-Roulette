@@ -1,0 +1,153 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    .hero {
+        text-align: center;
+        padding: 5rem 1rem;
+        animation: fadeInUp 0.6s ease-out;
+    }
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .hero h1 {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 50%, var(--text) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero h1 em { 
+        color: var(--accent-light); 
+        font-style: normal;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        max-width: 480px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.6;
+        animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+    .spin-btn {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: 700;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        letter-spacing: 0.5px;
+        transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+        box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    .spin-btn:hover { 
+        transform: translateY(-3px); 
+        opacity: 0.95;
+        box-shadow: 0 8px 25px rgba(230, 57, 70, 0.5);
+    }
+    .spin-btn:active {
+        transform: translateY(-1px);
+    }
+    .spin-btn .icon { margin-right: 0.5rem; font-size: 1.4rem; animation: spin 2s linear infinite; }
+    .spin-btn:hover .icon { animation: spin 0.8s linear infinite; }
+    
+    @@keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .browse-link { 
+        display: block; 
+        margin-top: 1.5rem; 
+        color: var(--text-muted); 
+        font-size: 0.9rem; 
+        text-decoration: none;
+        transition: color 0.2s, transform 0.2s;
+        animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+    .browse-link:hover { 
+        color: var(--accent);
+        transform: translateX(4px);
+    }
+    .stats {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 4rem;
+        flex-wrap: wrap;
+    }
+    .stat { 
+        text-align: center;
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: rgba(28, 28, 38, 0.5);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .stat:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+        box-shadow: 0 8px 20px rgba(230, 57, 70, 0.1);
+    }
+    .stat-number { 
+        font-size: 2.5rem; 
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .stat-label { 
+        color: var(--text-muted); 
+        font-size: 0.85rem; 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        margin-top: 0.25rem;
+        transition: color 0.2s;
+    }
+    .stat:hover .stat-label {
+        color: var(--text);
+    }
+</style>
+
+<div class="hero">
+    <h1>Discover a <em>classic</em><br>album today</h1>
+    <p>Spin the wheel and land on one of Rolling Stone's 100 Greatest Albums of All Time. No algorithm, just great music.</p>
+    <a href="/spin" class="spin-btn"><span class="icon">🎲</span> Spin the Wheel</a>
+    <a href="/browse" class="browse-link">or browse all 100 albums →</a>
+</div>
+
+<div class="stats">
+    <div class="stat">
+        <div class="stat-number">500</div>
+        <div class="stat-label">Great Albums</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">60+</div>
+        <div class="stat-label">Years of Music</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Ways to Listen</div>
+    </div>
+</div>

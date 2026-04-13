@@ -1,0 +1,385 @@
+@model AlbumRoulette.Models.Album
+@{
+    ViewData["Title"] = $"{Model.AlbumTitle} – {Model.Artist}";
+}
+
+<style>
+    .album-card {
+        background: rgba(28, 28, 38, 0.6);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        margin-top: 2rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .album-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(230, 57, 70, 0.15);
+        border-color: var(--border-light);
+    }
+    .album-top {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 0;
+        min-height: 280px;
+    }
+    @@media (max-width: 600px) {
+        .album-top { grid-template-columns: 1fr; }
+    }
+    .cover-wrap {
+        background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 280px;
+        position: relative;
+        overflow: hidden;
+    }
+    .cover-wrap::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 30%, rgba(230, 57, 70, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .cover-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s;
+    }
+    .album-card:hover .cover-wrap img {
+        transform: scale(1.05);
+    }
+    .cover-placeholder {
+        font-size: 5rem;
+        text-align: center;
+        opacity: 0.3;
+        animation: pulse 2s ease-in-out infinite;
+    }
+    @@keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.5; }
+    }
+    .album-info {
+        padding: 2rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .rank-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        width: fit-content;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .rank-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(230, 57, 70, 0.4);
+    }
+    .album-title {
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.4rem;
+        background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .album-artist {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        transition: color 0.2s;
+    }
+    .album-meta {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    .album-meta span { 
+        display: flex; 
+        align-items: center; 
+        gap: 0.4rem;
+        padding: 0.25rem 0.6rem;
+        background: rgba(230, 57, 70, 0.05);
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+    .album-meta span:hover {
+        background: rgba(230, 57, 70, 0.1);
+    }
+    .listen-section {
+        border-top: 1px solid var(--border);
+        padding: 1.5rem 2.5rem;
+        background: rgba(0, 0, 0, 0.2);
+    }
+    .listen-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+    .listen-buttons {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    .listen-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 700;
+        transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .listen-btn:hover { 
+        transform: translateY(-3px); 
+        opacity: 0.95;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .btn-spotify { background: linear-gradient(135deg, var(--spotify) 0%, #1aa34a 100%); }
+    .btn-youtube { background: linear-gradient(135deg, var(--youtube) 0%, #cc0000 100%); }
+    .btn-apple { background: linear-gradient(135deg, var(--apple) 0%, #e60000 100%); }
+    .btn-tidal { 
+        background: #111; 
+        border: 2px solid var(--tidal);
+        color: var(--tidal);
+        box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+    }
+    .btn-tidal:hover {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    }
+    .actions {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem 2.5rem;
+        border-top: 1px solid var(--border);
+        flex-wrap: wrap;
+        background: rgba(0, 0, 0, 0.1);
+    }
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-spin { 
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    }
+    .btn-spin:hover { 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(230, 57, 70, 0.4);
+    }
+    .btn-browse { 
+        background: rgba(28, 28, 38, 0.6);
+        color: var(--text-muted); 
+        border: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+        transition: all 0.2s;
+    }
+    .btn-browse:hover { 
+        color: var(--text);
+        border-color: var(--border-light);
+        background: rgba(28, 28, 38, 0.8);
+    }
+    .btn-mark-chosen {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    .btn-mark-chosen:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(102, 126, 234, 0.4);
+    }
+    .btn-mark-chosen.marked {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .btn-mark-chosen.marked:hover {
+        box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+    }
+    .chosen-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        width: fit-content;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="album-card">
+    <div class="album-top">
+        <div class="cover-wrap">
+            @if (!string.IsNullOrEmpty(Model.CoverArtUrl))
+            {
+                <img src="@Model.CoverArtUrl" alt="@Model.AlbumTitle cover art" loading="lazy" />
+            }
+            else
+            {
+                <div class="cover-placeholder">🎵</div>
+            }
+        </div>
+        <div class="album-info">
+            <div class="rank-badge">⭐ #@Model.Rank of 500</div>
+            <h1 class="album-title">@Model.AlbumTitle</h1>
+            <p class="album-artist">@Model.Artist</p>
+            <div class="album-meta">
+                <span>📅 @Model.Year</span>
+                <span>🏷️ @Model.Label</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="listen-section">
+        <div class="listen-label">🎧 Listen on</div>
+        <div class="listen-buttons">
+            <a href="@Model.SpotifySearchUrl" target="_blank" rel="noopener" class="listen-btn btn-spotify">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                Spotify
+            </a>
+            <a href="@Model.YouTubeSearchUrl" target="_blank" rel="noopener" class="listen-btn btn-youtube">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.499 6.203a3.008 3.008 0 0 0-2.089-2.089c-1.87-.501-9.4-.501-9.4-.501s-7.509 0-9.399.501a3.008 3.008 0 0 0-2.09 2.09C0 8.093 0 12.001 0 12.001s0 3.907.521 5.798a3.008 3.008 0 0 0 2.09 2.088c1.868.502 9.397.502 9.397.502s7.506 0 9.396-.502a3.008 3.008 0 0 0 2.09-2.088C24 15.908 24 12 24 12s0-3.907-.501-5.797zM9.609 15.601V8.408l6.264 3.602-6.264 3.591z"/></svg>
+                YouTube
+            </a>
+            <a href="@Model.AppleMusicSearchUrl" target="_blank" rel="noopener" class="listen-btn btn-apple">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 0 0-.244-2.19c-.317-1.31-1.064-2.31-2.22-3.03a5.022 5.022 0 0 0-1.Gone-.37 7.784 7.784 0 0 0-1.5-.19c-.743-.05-1.49-.04-2.234-.04H7.985c-.57 0-1.136.02-1.706.05-.496.03-.986.13-1.456.28-.43.14-.826.35-1.183.62-.358.27-.663.59-.913.95-.35.51-.55 1.08-.64 1.68-.07.49-.1.97-.1 1.46v9.93c0 .51.03 1.01.1 1.5.09.6.29 1.17.64 1.68.25.36.555.68.913.95.357.27.753.48 1.183.62.47.15.96.25 1.456.28.57.03 1.136.05 1.706.05h8.03c.744 0 1.49.01 2.234-.04a7.784 7.784 0 0 0 1.5-.19 4.93 4.93 0 0 0 1.22-.37c1.156-.72 1.903-1.72 2.22-3.03.16-.69.24-1.42.244-2.19.01-.48.01-9.45 0-9.93z"/></svg>
+                Apple Music
+            </a>
+            <a href="@Model.TidalSearchUrl" target="_blank" rel="noopener" class="listen-btn btn-tidal">
+                🌊 Tidal
+            </a>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button onclick="markAsChosen(@Model.Rank)" class="action-btn btn-mark-chosen" id="mark-btn">
+            <span id="mark-icon">✓</span> Mark as Chosen
+        </button>
+        <a href="#" onclick="spinAgain(); return false;" class="action-btn btn-spin">🎲 Spin Again</a>
+        <a href="/browse" class="action-btn btn-browse">📋 Browse All</a>
+    </div>
+
+    <script>
+        const CHOSEN_STORAGE_KEY = 'albumRoulette_chosenAlbums';
+
+        function getChosenAlbums() {
+            const data = localStorage.getItem(CHOSEN_STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveChosenAlbums(albums) {
+            localStorage.setItem(CHOSEN_STORAGE_KEY, JSON.stringify(albums));
+        }
+
+        function markAsChosen(rank) {
+            const chosen = getChosenAlbums();
+            const btn = document.getElementById('mark-btn');
+            
+            if (chosen.includes(rank)) {
+                // Unmark
+                const index = chosen.indexOf(rank);
+                chosen.splice(index, 1);
+                btn.classList.remove('marked');
+                btn.querySelector('span').textContent = '✓';
+            } else {
+                // Mark
+                chosen.push(rank);
+                btn.classList.add('marked');
+                btn.querySelector('span').textContent = '✔';
+            }
+            
+            saveChosenAlbums(chosen);
+        }
+
+        function spinAgain() {
+            const chosen = getChosenAlbums();
+            fetch('/api/spin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(chosen)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        alert('All albums have been chosen! Click "Clear All" on the Browse page to reset.');
+                        return;
+                    }
+                    throw new Error('Failed to get album');
+                }
+                return response.json();
+            })
+            .then(album => {
+                if (album) {
+                    // Redirect to the album page
+                    window.location.href = '/spin';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to spin. Please try again.');
+            });
+        }
+
+        // Check if album is already marked as chosen
+        window.addEventListener('load', function() {
+            const chosen = getChosenAlbums();
+            const rank = @Model.Rank;
+            const btn = document.getElementById('mark-btn');
+            
+            if (chosen.includes(rank)) {
+                btn.classList.add('marked');
+                btn.querySelector('span').textContent = '✔';
+            }
+        });
+    </script>
+</div>

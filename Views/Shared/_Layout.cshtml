@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Album Roulette</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0a0a0f;
+            --bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #13131a 50%, #1c1c26 100%);
+            --surface: #13131a;
+            --surface2: #1c1c26;
+            --surface-hover: #242430;
+            --accent: #e63946;
+            --accent-dark: #c62a35;
+            --accent-light: #ff4a58;
+            --text: #f0f0f0;
+            --text-muted: #888;
+            --border: #2a2a38;
+            --border-light: #3a3a48;
+            --spotify: #1DB954;
+            --youtube: #FF0000;
+            --apple: #fc3c44;
+            --tidal: #00FFFF;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 48px rgba(230, 57, 70, 0.15);
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; transition: background 0.3s; }
+        nav { background: rgba(19, 19, 26, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+        .nav-brand { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; transition: transform 0.2s; }
+        .nav-brand:hover { transform: scale(1.05); }
+        .nav-brand span { color: var(--text); -webkit-text-fill-color: unset; background: none; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s, text-shadow 0.2s; position: relative; }
+        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 10px rgba(230, 57, 70, 0.3); }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 4rem; background: rgba(0, 0, 0, 0.2); transition: background 0.3s; }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <nav>
+        <a class="nav-brand" href="/"><span>🎵 </span>Album<span> Roulette</span></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/spin">Spin</a>
+            <a href="/browse">Browse</a>
+        </div>
+    </nav>
+    <main>@RenderBody()</main>
+    <footer>Based on Rolling Stone's 500 Greatest Albums &middot; Album art via Cover Art Archive &middot; Built with ASP.NET Core</footer>
+</body>
+</html>
