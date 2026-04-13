@@ -60,6 +60,7 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 Controllers/HomeController.cs
 Data/
  AlbumRouletteDbContext.cs
+ AlbumSeedData.cs
  DbInitializerService.cs
  Repositories/
   AlbumRepository.cs

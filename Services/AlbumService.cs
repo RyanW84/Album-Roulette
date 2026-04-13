@@ -64,7 +64,7 @@ public class AlbumService(IAlbumRepository repository, IMusicMetadataService met
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting all albums");
-            return new List<Album>();
+            return [];
         }
     }
 
@@ -102,7 +102,7 @@ public class AlbumService(IAlbumRepository repository, IMusicMetadataService met
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting albums from decade {Decade}", decade);
-            return new List<Album>();
+            return [];
         }
     }
 
@@ -118,7 +118,7 @@ public class AlbumService(IAlbumRepository repository, IMusicMetadataService met
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting decades");
-            return new List<int>();
+            return [];
         }
     }
 
@@ -153,7 +153,7 @@ public class AlbumService(IAlbumRepository repository, IMusicMetadataService met
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error searching albums with query {Query}", query);
-            return new List<Album>();
+            return [];
         }
     }
 }

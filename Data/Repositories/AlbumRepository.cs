@@ -50,7 +50,7 @@ public class AlbumRepository(AlbumRouletteDbContext context, ILogger<AlbumReposi
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all albums");
-            return new List<Album>();
+            return [];
         }
     }
 
@@ -69,7 +69,7 @@ public class AlbumRepository(AlbumRouletteDbContext context, ILogger<AlbumReposi
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving albums from decade {Decade}", decade);
-            return new List<Album>();
+            return [];
         }
     }
 
@@ -191,7 +191,7 @@ public class AlbumRepository(AlbumRouletteDbContext context, ILogger<AlbumReposi
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving decades");
-            return new List<int>();
+            return [];
         }
     }
 
@@ -238,7 +238,7 @@ public class AlbumRepository(AlbumRouletteDbContext context, ILogger<AlbumReposi
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error searching albums with query {Query}", query);
-            return new List<Album>();
+            return [];
         }
     }
 }

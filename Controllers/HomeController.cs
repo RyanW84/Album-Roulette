@@ -60,7 +60,7 @@ public class HomeController : Controller
         try
         {
             if (chosenRanks == null)
-                chosenRanks = new List<int>();
+                chosenRanks = [];
 
             var album = await _albumService.GetRandomAlbumAsync(chosenRanks);
 
