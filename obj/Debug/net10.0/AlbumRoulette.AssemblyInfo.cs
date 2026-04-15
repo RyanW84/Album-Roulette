@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AlbumRoulette")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+74971aa815b1c9f18c33f79b0d6b2c4c6a8a8b98")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fee890f70b6fa23bc2dd71ecdf439688c37225a")]
 [assembly: System.Reflection.AssemblyProductAttribute("AlbumRoulette")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AlbumRoulette")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
